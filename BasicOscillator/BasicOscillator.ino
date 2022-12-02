@@ -61,16 +61,16 @@ void loop(){
     patch.ProcessAnalogControls();
 
     // Read mode
-    float mode = 6.0 * patch.GetAdcValue(1);
+    float mode = 5.0 * patch.GetAdcValue(1);
     if (mode < 1.0) {
       osc.SetWaveform(Oscillator::WAVE_SIN);
     } else if (mode >= 1.0 and mode < 2.0) {
       osc.SetWaveform(Oscillator::WAVE_TRI);
     } else if (mode >= 2.0 and mode < 3.0) {
       osc.SetWaveform(Oscillator::WAVE_SAW);
-    } else if (mode >= 4.0 and mode < 5.0) {
+    } else if (mode >= 3.0 and mode < 4.0) {
       osc.SetWaveform(Oscillator::WAVE_RAMP);
-    } else if (mode >= 5.0) {
+    } else if (mode >= 4.0) {
       osc.SetWaveform(Oscillator::WAVE_SQUARE);
     }
 
@@ -81,13 +81,13 @@ void loop(){
     // Read attack value
     float atk_pot = patch.AnalogReadToVolts(analogRead(PIN_PATCH_SM_CV_3));
     float atk_cv = patch.AnalogReadToVolts(analogRead(PIN_PATCH_SM_CV_6));
-    attack = 0.0002 + (atk_pot + atk_cv) / 5.0;
+    attack = 0.0001 + (atk_pot + atk_cv) / 5.0;
     adenv.SetTime(ADENV_SEG_ATTACK, attack);
 
     // Read decay value
     float dec_pot = patch.AnalogReadToVolts(analogRead(PIN_PATCH_SM_CV_4));
     float dec_cv = patch.AnalogReadToVolts(analogRead(PIN_PATCH_SM_CV_7));
-    decay = 0.01 + (dec_pot + dec_cv) / 5.0;
+    decay = 0.0001 + (dec_pot + dec_cv) / 5.0;
     adenv.SetTime(ADENV_SEG_DECAY, decay);
 
     // Handle gate inputs
