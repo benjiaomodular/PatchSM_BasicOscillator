@@ -1,10 +1,20 @@
-# Triple Saw
+# BasicOscillator
 
-Arduino code for a CV-controllable triple saw oscillator for the Daisy Patch Submodule (tested with the patch.init()).
+A basic DaisyDuino oscillator for the Patch.init() with 6 selectable voices and a built in envelope and vca.
 
-- CV_1 - coarse tune
-- CV_2 - fine tune
-- CV_3 - detune spread
-- CV_5 - v/oct
+## Knobs
+- CV_1 - tune
+- CV_2 - oscillator selector
+- CV_3 - attack
+- CV_4 - decay
 
-This is based on [beserge's TripleSaw example](https://github.com/electro-smith/DaisyDuino/tree/master/examples/Patch%20SM/TripleSaw) in the Electro-Smith repository.
+## Inputs
+- B7 - manual gate button
+- B10 - gate in
+- CV_5 - volt/oct
+- CV_6 - attack
+- CV_7 - decay
+
+## Outputs
+- OUT_L and OUT_R - stereo output
+- CV_OUT_1 - envelope out
