@@ -10,6 +10,7 @@ A basic DaisyDuino oscillator for the Patch.init() with 6 selectable voices and 
 
 ## Inputs
 - B7 - manual gate button
+- B8 - flip up to use internal vca
 - B10 - gate in
 - CV_5 - volt/oct
 - CV_6 - attack

@@ -4,11 +4,14 @@ DaisyHardware patch;
 static Oscillator osc;
 static AdEnv adenv;
 Switch button;
+Switch toggle;
 
 float voltsPerNote = 0.0833;
 float note = 0;
 float attack = 0;
 float decay = 0.5;
+
+bool vca_toggle_state = false;
 
 void AudioCallback(float**  in, float** out, size_t size)
 {
@@ -25,7 +28,10 @@ void AudioCallback(float**  in, float** out, size_t size)
     {       
         float sig = osc.Process(); 
         float env_out = adenv.Process();
-        sig *= env_out;
+
+        if (vca_toggle_state){
+          sig *= env_out;
+        }
 
         /** In this example both outputs will be the same */
         out[0][i] = out[1][i] = sig;
@@ -46,6 +52,7 @@ void setup()
     osc.SetWaveform(Oscillator::WAVE_SIN);
 
     button.Init(1000, true, PIN_PATCH_SM_B7, INPUT_PULLUP);
+    toggle.Init(1000, true, PIN_PATCH_SM_B8, INPUT_PULLUP);
 
     // Set envelope parameters
     adenv.SetMin(0.0);
@@ -57,6 +64,7 @@ void setup()
 
 void loop(){
     button.Debounce();
+    toggle.Debounce();
     patch.DebounceControls();
     patch.ProcessAnalogControls();
 
@@ -67,11 +75,11 @@ void loop(){
     } else if (mode >= 1.0 and mode < 2.0) {
       osc.SetWaveform(Oscillator::WAVE_TRI);
     } else if (mode >= 2.0 and mode < 3.0) {
-      osc.SetWaveform(Oscillator::WAVE_SAW);
+      osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
     } else if (mode >= 3.0 and mode < 4.0) {
       osc.SetWaveform(Oscillator::WAVE_RAMP);
     } else if (mode >= 4.0) {
-      osc.SetWaveform(Oscillator::WAVE_SQUARE);
+      osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
     }
 
     // Read note value
@@ -96,5 +104,8 @@ void loop(){
     if (gate_state or btn_state) {
       adenv.Trigger();
     }
+
+    // Toggle whether to use the internal VCA
+    vca_toggle_state = toggle.Pressed();
     
 }
